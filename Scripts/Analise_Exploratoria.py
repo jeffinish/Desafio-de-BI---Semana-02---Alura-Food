@@ -10,8 +10,6 @@ df_2 = pd.read_json(r'G:\My Drive\1. ESTUDO\Desafio de BI - Semana 02 - Alura Fo
 df_3 = pd.read_json(r'G:\My Drive\1. ESTUDO\Desafio de BI - Semana 02 - Alura Food\Dados Brutos\file3.json')
 df_4 = pd.read_json(r'G:\My Drive\1. ESTUDO\Desafio de BI - Semana 02 - Alura Food\Dados Brutos\file4.json')
 
-df_1
-
 info_restaurants = []
 ## Trantando o primeiro arquivo
 df_1_clean = df_1[df_1.results_shown > 0][['restaurants','results_shown']] # Considerando apenas as colunas que possuem informações dos clientes
@@ -40,7 +38,7 @@ info_restaurants.extend(info_restaurants_2)
 ## Tratando o terceiro arquivo
 df_3_clean = df_3[df_3.results_shown > 0][['restaurants','results_shown']] # Considerando apenas as colunas que possuem informações dos clientes
 info_restaurants_3 = [] #Array vazio para guardarmos as informações do loop do arquivo em questao
-validate = 0
+# validate = 0
 for i in df_3_clean.index:
     a = df_3_clean.loc[i]
     info_restaurants_3.extend(a.restaurants)
@@ -62,7 +60,7 @@ for i in df_4_clean.index:
 info_restaurants.extend(info_restaurants_4)
 
 restaurants = pd.json_normalize(info_restaurants)
-restaurants.info()
+# restaurants.info()
 
 # Validando os dados
 restaurants['restaurant.R.res_id'].drop_duplicates()
@@ -112,18 +110,16 @@ id18400530.iloc[:,a]
 restaurants.dropna(axis='columns',how='all',inplace=True)
 restaurants.rename(columns=lambda x: x.replace("restaurant.",""),inplace=True)
 restaurants.drop(columns=['photos_url','apikey','deeplink','book_url','switch_to_order_menu','offers','zomato_events','establishment_types','events_url','order_deeplink','order_url'],inplace=True)
-restaurants.drop(columns=['order_deeplink','order_url'],inplace=True)
 restaurants.drop(columns=['R.res_id'],inplace=True)
-restaurants.info()
 
 restaurants.insert(0,'id',restaurants.pop('id'))
 restaurants.drop_duplicates(subset=['id'],inplace=True)
 
+## Teste para expandir a coluna cuisines
 restaurants['cuisines_0']
-
 a = restaurants[['cuisines_0']]
 b = restaurants[['cuisines_1']]
- pd.concat([a,b],ignore_index=True)
+pd.concat([a,b],ignore_index=True)
 
 restaurants=restaurants.join(restaurants['cuisines'].str.split(',',expand=True)).rename(columns={0:'cuisines_0',1:'cuisines_1',2:'cuisines_2',3:'cuisines_3',4:'cuisines_4',5:'cuisines_5',6:'cuisines_6',7:'cuisines_7'})
 
@@ -143,5 +139,8 @@ unique_cuisines.drop_duplicates().tolist()
 cols = ['cuisines_0','cuisines_1','cuisines_2','cuisines_3','cuisines_4','cuisines_5','cuisines_6','cuisines_7']
 restaurants[cols] = restaurants[cols].apply(lambda x: x.str.strip())
 
+restaurants.info()
 
-restaurants.to_csv(r'G:\My Drive\1. ESTUDO\Desafio de BI - Semana 02 - Alura Food\Dados Tratados\restaurants.csv',sep=';',index=False)
+restaurants_india = restaurants[restaurants['location.country_id'] == 1]
+
+restaurants_india.to_csv(r'G:\My Drive\1. ESTUDO\Desafio de BI - Semana 02 - Alura Food\Dados Tratados\restaurants.csv',sep=';',index=False)

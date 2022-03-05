@@ -124,8 +124,9 @@ e esta repetição merece uma análise um pouco mais detalhada. Olhando para o I
 
 Para finalizar o tratamento de dados, vamos selecionar e tratar as colunas separadamente para facilitar a criação do dashboard. Este tratamento seguiu as seguintes etapas:
 
-1. Utilizar o método `dropna` com argumento `how=All` para remover colunas totalmente nulas.
-2. Utilizar o método `rename` juntamente com o `replace` para ajustar o nome das colunas.
-3. Utilizar o método `drop` para remover colunas desnecessárias para as análises.
-4. Utilizar o método `drop_duplicates` a partir da coluna `id` como filtro.
+1. Utilizar o método `dropna` com argumento `how=All` para remover colunas totalmente nulas;
+2. Utilizar o método `rename` juntamente com o `replace` para ajustar o nome das colunas;
+3. Utilizar o método `drop` para remover colunas desnecessárias para as análises;
+4. Utilizar o método `drop_duplicates` a partir da coluna `id` como filtro;
 5. Separamos a coluna `cuisines` em mutiplas colunas utilizando `split` e `strip`;
+6.
